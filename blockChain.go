@@ -63,6 +63,7 @@ func NewBlockChain(address string) *BlockChain {
 			if err != nil {
 				log.Panic("创世块写入数据失败")
 			}
+			//保存最后一个区块头的哈希,便于遍历查找
 			err = bucket.Put([]byte("LastHashKey"), genesisBlock.Hash)
 			if err != nil {
 				log.Panic("创世块写入数据失败")
@@ -117,6 +118,7 @@ func (bc *BlockChain) PrintChain() {
 
 		//数据库中,hash作为key,block的字节流作为value
 		//从第一个key->value 进行遍历,到最后一个固定的key 时直接返回
+		//k:key   v: value
 		b.ForEach(func(k, v []byte) error {
 			if bytes.Equal(k, []byte("LastHashKey")) {
 				return nil
@@ -386,7 +388,7 @@ func (bc *BlockChain) SignTransaction(tx *Transaction, privateKey *ecdsa.Private
 	//2. 找到目标交易，（根据TXid来找）
 	//3. 添加到prevTXs里面
 	for _, input := range tx.TXInputs {
-		//更具id查找交易本身,需要遍历整个区块链
+		//根据id查找交易本身,需要遍历整个区块链
 		tx, err := bc.FindTransactionByTXid(input.TXid)
 		if err != nil {
 			log.Panic(err)

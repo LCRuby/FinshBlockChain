@@ -7,7 +7,6 @@ import (
 	"crypto/elliptic"
 	"crypto/rand"
 	"crypto/sha256"
-	"fmt"
 	"github.com/labstack/gommon/log"
 	"golang.org/x/crypto/ripemd160"
 )
@@ -103,8 +102,8 @@ func IsValidAddress(address string) bool {
 	//3. 做checksum函数
 	checksum2 := CheckSum(payload)
 
-	fmt.Printf("checksum1 : %x\n", checksum1)
-	fmt.Printf("checksum2 : %x\n", checksum2)
+	//fmt.Printf("checksum1 : %x\n", checksum1)
+	//fmt.Printf("checksum2 : %x\n", checksum2)
 
 	//4. 比较
 	return bytes.Equal(checksum1, checksum2)

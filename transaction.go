@@ -213,7 +213,7 @@ func (tx *Transaction) Sign(privateKey *ecdsa.PrivateKey, prevTXs map[string]Tra
 		txCopy.SetHash()
 		//还原，以免影响后面input的签名
 		txCopy.TXInputs[i].PubKey = nil
-		//signDataHash认为是原始数据
+		//signDataHash认为是原始数据,这是setHash操作流程决定的
 		signDataHash := txCopy.TXID
 		//4. 执行签名动作得到r,s字节流
 		r, s, err := ecdsa.Sign(rand.Reader, privateKey, signDataHash)
